@@ -4,7 +4,7 @@ import 'package:socialmedia/view/auth/login.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/snack_bars.dart';
-import '../../view/auth/home.dart';
+import '../../view/dashboard/home.dart';
 
 
 

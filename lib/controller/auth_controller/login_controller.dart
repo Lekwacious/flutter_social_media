@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:socialmedia/utils/indexes.dart';
-import 'package:socialmedia/view/auth/home.dart';
+import 'package:socialmedia/view/dashboard/home.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/snack_bars.dart';
+import '../../view/dashboard/bottomtab.dart';
 
 
 
@@ -41,11 +42,6 @@ class LoginController extends GetxController{
 
   loginUser( ) async {
     isLoading.value = true;
-    var formData = {
-      'email': emailController.text.trim(),
-      'password': passwordController.text.trim(),
-    };
-
     try {
     await  FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
     AppSnackBars.successSnackBar(message: "User LoggedIn successfully");
@@ -66,16 +62,11 @@ class LoginController extends GetxController{
       passwordError.value = "Please enter a valid password";
     } else {
       loginUser();
-             Get.offAll(() =>   HomeScreen());  //BottomTab()
-
-
-      // loginUser(context);
-
+      Get.offAll(() =>     BottomTab());
     }
   }
 
    enableButtonColor(){
-
     if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
        active.value = appPrimaryTwoColor;
     }

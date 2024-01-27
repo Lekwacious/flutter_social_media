@@ -1,7 +1,5 @@
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:socialmedia/utils/indexes.dart';
 
-import '../../view/auth/auth_gate.dart';
 import '../../view/auth/login.dart';
 
 
