@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:socialmedia/utils/indexes.dart';
+import 'package:socialmedia/view/auth/login.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/snack_bars.dart';
@@ -69,6 +70,12 @@ class LoginController extends GetxController{
     else{
       active.value = appInactiveColor;
     }
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    AppSnackBars.successSnackBar(message: "User Logged out successfully");
+    Get.offAll(()=> Login());
   }
 
 }

@@ -87,7 +87,7 @@ class _BottomTabState extends State<BottomTab> {
           case 2:
             return CupertinoTabView(
                 builder: (context) {
-                  return const CupertinoPageScaffold(
+                  return  CupertinoPageScaffold(
 
                     child: Profile(),
                   );
