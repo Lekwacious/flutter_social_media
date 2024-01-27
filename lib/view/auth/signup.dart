@@ -1,4 +1,5 @@
 import 'package:socialmedia/utils/indexes.dart';
+import 'package:socialmedia/view/auth/login.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/auth_input_form.dart';
@@ -37,7 +38,6 @@ class Signup extends StatelessWidget {
                       const SizedBox(
                         height: 30,
                       ),
-
                       FormTextField(
                         image: "assets/pngs/mail.png",
                         errortxt: controller.emailError.value.isEmpty
@@ -51,7 +51,6 @@ class Signup extends StatelessWidget {
                         controller: controller.emailController,
                         validator: (String) {},
                       ),
-
                       FormTextField(
                         image: "assets/pngs/password.png",
                         errortxt: controller.passwordError.value.isEmpty
@@ -70,24 +69,48 @@ class Signup extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Already have an account?",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              fontFamily: 'Urbanist',
+                            ),
+                          ),
+                          const SizedBox(width: 2),
+                          TextButton(
+                            onPressed: () {
+                              Get.to(() => Login());
+                            },
+                            child: const Text(
+                              'Log In',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: appPrimaryTwoColor,
+                                fontFamily: 'Urbanist',
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                       const SizedBox(
                         height: 120,
                       ),
                       CustomButton(
                         text: 'Signup',
                         isLoading: controller.isLoading.value,
-                        onTap:
-                            controller.active.value == appInactiveColor
-                                ? () {}
-                                : () {
-                                    controller.validateSignUp(context);
-                                  },
+                        onTap: controller.active.value == appInactiveColor
+                            ? () {}
+                            : () {
+                                controller.validateSignUp(context);
+                              },
                         color: controller.active.value,
                         textColor: Colors.white,
                         loadingColor: Colors.white,
                       ),
-
                     ],
                   ),
                 ),

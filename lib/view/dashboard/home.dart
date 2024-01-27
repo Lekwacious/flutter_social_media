@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/utils/indexes.dart';
+import 'package:socialmedia/view/dashboard/new_post.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/auth_input_form.dart';
@@ -58,15 +59,15 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-            child: Obx(
-              () => ListView(
-                //shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
+        child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
                 children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -76,22 +77,14 @@ class HomeScreen extends StatelessWidget {
                           text: 'What\'s on your mind',
                           isLoading: controller.isLoading.value,
                           onTap: () {
-                            buildLogoutModal(context);
+                            Get.to(() => NewPost());
                           },
-
                           color: Colors.grey,
                           textColor: Colors.black,
                           loadingColor: Colors.red,
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  const SizedBox(
-                    height: 5,
                   ),
                   StreamBuilder<QuerySnapshot>(
                       stream: controller.stream,
@@ -103,122 +96,123 @@ class HomeScreen extends StatelessWidget {
                         }
 
                         if (snapshot.hasData) {
-                          //get the data
+
                           QuerySnapshot querySnapshot = snapshot.data;
                           List<QueryDocumentSnapshot> documents =
                               querySnapshot.docs;
-                          List<Map> items = documents.map((e) => e.data() as Map).toList();
+                          List<Map> items =
+                              documents.map((e) => e.data() as Map).toList();
                           return ListView.separated(
-                            // scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            separatorBuilder: (context, index) => const Divider(),
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              Map thisItem  =items[index];
-                            return  Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(children: [
-                                  Text(
-                                    "${thisItem['posts']}",
-                                    textAlign: TextAlign.justify,
-                                    style: GoogleFonts.lato(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
+
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) =>
+                                  const Divider(),
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                Map thisItem = items[index];
+                                return Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+
+                                    Text(
+                                      "${thisItem['posts']}",
+                                      textAlign: TextAlign.justify,
+                                      style: GoogleFonts.lato(
+                                        textStyle: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  thisItem['imageUrl']==""
-                                      ? SizedBox():Image.network( "${items[index]['imageUrl']}",
-                                    // height: 150,
-                                    // width: 150,
-                                  ),
-                                ]
-                                  ),
-                              );
-                            }
-                          );
+                                    thisItem['imageUrl'] == ""
+                                        ? SizedBox()
+                                        : Image.network(
+                                            "${items[index]['imageUrl']}",
+                                          ),
+                                  ]),
+                                );
+                              });
                         }
                         return Center(child: CircularProgressIndicator());
                       }),
-
-
                 ],
               ),
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
 
   ///logout function here
-  buildLogoutModal(BuildContext context) {
-    return showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (context) {
-          return Obx(()=>
-             AlertDialog(
-              alignment: Alignment.center,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              backgroundColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 30, //50.w
-                vertical: 30, //50.h
-              ),
-              content: SizedBox(
-                width: 395,
-                height: 440,
-                child: Column(children: [
-                  FormTextField2(
-                    errortxt: controller.postError.value.isEmpty
-                        ? null
-                        : controller.postError.value,
-                    textCapitalization: TextCapitalization.none,
-                    hintText: 'Upload a picture and gist us',
-                    //hintText: 'keleDevine001',
-                    textInputAction: TextInputAction.next,
-                    onChange: controller.clearPostError,
-                    textInputType: TextInputType.text,
-                    controller: controller.postController,
-                    validator: (String) {}, headerText: '',
-                    //isPassWordField: true,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                 InkWell(
-                   onTap: ()async{
-                   await controller.uploadImage();
-                     print("${controller.file}" +"jkhjk");
-                   },
-                     child: Icon(Icons.upload)),
-
-                  controller.file == null ?SizedBox():Image.memory(controller.file!.readAsBytesSync()),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  CustomButton(
-                    text: 'Proceed',
-                    isLoading: controller.isLoading.value,
-                    onTap: controller.active.value == appInactiveColor
-                        ? () {}
-                        : () async {
-                      await controller.saveFile(controller.file);
-                       Get.to(()=> HomeScreen());
-                    },
-                    color: controller.active.value,
-                    textColor: Colors.white,
-                    loadingColor: Colors.white,
-                  ),
-                ]),
-              ),
-
-            ),
-          );
-        });
-  }
+  // buildLogoutModal(BuildContext context) {
+  //   return showDialog(
+  //       barrierDismissible: true,
+  //       context: context,
+  //       builder: (context) {
+  //         return Obx(()=>
+  //            AlertDialog(
+  //             alignment: Alignment.center,
+  //             shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(20)),
+  //             backgroundColor: Colors.white,
+  //             contentPadding: const EdgeInsets.symmetric(
+  //               horizontal: 30, //50.w
+  //               vertical: 30, //50.h
+  //             ),
+  //             content: SizedBox(
+  //               width: 395,
+  //               height: 440,
+  //               child: Column(children: [
+  //                 FormTextField2(
+  //                   errortxt: controller.postError.value.isEmpty
+  //                       ? null
+  //                       : controller.postError.value,
+  //                   textCapitalization: TextCapitalization.none,
+  //                   hintText: 'Upload a picture and gist us',
+  //                   //hintText: 'keleDevine001',
+  //                   textInputAction: TextInputAction.next,
+  //                   onChange: controller.clearPostError,
+  //                   textInputType: TextInputType.text,
+  //                   controller: controller.postController,
+  //                   validator: (String) {}, headerText: '',
+  //                   //isPassWordField: true,
+  //                 ),
+  //                 const SizedBox(
+  //                   height: 25,
+  //                 ),
+  //                InkWell(
+  //                  onTap: ()async{
+  //                  await controller.uploadImage();
+  //                    print("${controller.file}" +"jkhjk");
+  //                  },
+  //                    child: Icon(Icons.upload)),
+  //
+  //                 controller.file == null ?SizedBox():Image.memory(controller.file!.readAsBytesSync()),
+  //                 const SizedBox(
+  //                   height: 40,
+  //                 ),
+  //                 CustomButton(
+  //                   text: 'Proceed',
+  //                   isLoading: controller.isLoading.value,
+  //                   onTap: controller.active.value == appInactiveColor
+  //                       ? () {}
+  //                       : () async {
+  //                     await controller.saveFile(controller.file);
+  //                      Get.to(()=> HomeScreen());
+  //                   },
+  //                   color: controller.active.value,
+  //                   textColor: Colors.white,
+  //                   loadingColor: Colors.white,
+  //                 ),
+  //               ]),
+  //             ),
+  //
+  //           ),
+  //         );
+  //       });
+  // }
 }
+
+

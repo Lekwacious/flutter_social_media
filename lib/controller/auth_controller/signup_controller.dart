@@ -60,6 +60,7 @@ class SignupController extends GetxController{
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
       AppSnackBars.successSnackBar(message: "User created successfully");
+      Get.offAll(() =>   Login());
     } on FirebaseAuthException  catch (e) {
       isLoading.value = false;
       if(e.code == 'weak-password'){
@@ -97,10 +98,8 @@ class SignupController extends GetxController{
 
     } else {
       signUp();
-      Get.offAll(() =>   Login());  //BottomTab()
+      //BottomTab()
 
-
-      // loginUser(context);
 
     }
   }

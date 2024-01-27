@@ -22,8 +22,8 @@ class Login extends StatelessWidget {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                child: Obx(()=>
-                   ListView(
+                child: Obx(
+                  () => ListView(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
                     children: [
@@ -44,7 +44,7 @@ class Login extends StatelessWidget {
                         height: 30,
                       ),
                       FormTextField(
-                        image:"assets/pngs/mail.png" ,
+                        image: "assets/pngs/mail.png",
                         errortxt: controller.emailError.value.isEmpty
                             ? null
                             : controller.emailError.value,
@@ -88,68 +88,53 @@ class Login extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text("Don't have an account?",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    fontFamily: 'Urbanist',
-                                  ),
+                              const Text(
+                                "Don't have an account?",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Urbanist',
+                                ),
                               ),
                               const SizedBox(width: 2),
                               TextButton(
-                                  onPressed: () {
-                                    Get.to(() => Signup());
-                                  },
-                                  child: const Text('Sign up',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: appPrimaryTwoColor,
-                                        fontFamily: 'Urbanist',
-                                      ),
+                                onPressed: () {
+                                  Get.to(() => Signup());
+                                },
+                                child: const Text(
+                                  'Sign up',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: appPrimaryTwoColor,
+                                    fontFamily: 'Urbanist',
                                   ),
+                                ),
                               )
                             ],
                           ),
                         ),
-
                       ]),
                       const SizedBox(
                         height: 120,
                       ),
 
-
-                     CustomButton(
-                          text: 'Continue',
-                          isLoading: controller.isLoading.value,
-                          onTap: controller.active.value== appInactiveColor? (){}: () {
-                            controller.enableButtonColor();
-                            controller.validateLogin(context);
-                          },
-                          color: controller.active.value,
-                          textColor: Colors.white,
-                          loadingColor: Colors.white,
-                        ),
+                      CustomButton(
+                        text: 'Continue',
+                        isLoading: controller.isLoading.value,
+                        onTap: controller.active.value == appInactiveColor
+                            ? () {}
+                            : () {
+                                controller.enableButtonColor();
+                                controller.validateLogin(context);
+                              },
+                        color: controller.active.value,
+                        textColor: Colors.white,
+                        loadingColor: Colors.white,
+                      ),
 
                       const SizedBox(
                         height: 95,
                       ),
-                      InkWell(
-                        onTap: (){
-                          //Get.to(()=> ChangePassword());
-                        }
-                        ,
-                        child: const Center(
-                          child: Text('Forgot Password?',
-                              style: TextStyle(
-                                color: appPrimaryTwoColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                fontFamily: 'Urbanist',
-                              )
-                          ),
-                        ),
-                      ),
-
                     ],
                   ),
                 ),

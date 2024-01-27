@@ -21,6 +21,13 @@ class DashboardController extends GetxController {
   late Stream<QuerySnapshot> stream;
 
   @override
+  void dispose() {
+    postController.dispose();
+    super.dispose();
+  }
+
+
+  @override
   void onInit() async {
     stream = _reference.snapshots();
     super.onInit();
@@ -42,17 +49,22 @@ class DashboardController extends GetxController {
 
   var imageUrl = ''.obs;
 
-  var files = ''.obs;
+ var files = ''.obs;
   File? file;
-
+  Rx<String> avatarPath = ''.obs;
   uploadImage() async {
     final _imagePicker = ImagePicker();
     XFile? image;
     await Permission.photos.request();
     image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if(image != null){
+      AppSnackBars.successSnackBar(message: "image picked successfully");
+    }
     file = File(image!.path);
-    files.value = file!.path;
+    avatarPath.value = image.path;
+    //files.value = file!.path;
   }
+
 
 
   saveFile(File? file) async {
