@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socialmedia/utils/indexes.dart';
 
@@ -99,6 +101,7 @@ class HomeScreen extends StatelessWidget {
                               child: Text(
                                   'Some error occurred ${snapshot.error}'));
                         }
+
                         if (snapshot.hasData) {
                           //get the data
                           QuerySnapshot querySnapshot = snapshot.data;
@@ -121,17 +124,18 @@ class HomeScreen extends StatelessWidget {
                                     style: GoogleFonts.lato(
                                       textStyle: const TextStyle(
                                         color: Colors.black,
-                                        fontSize: 13,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  thisItem.containsKey('imageUrl')
-                                      ? Image.network( "${items[index]['imageUrl']}",
+                                  thisItem['imageUrl']==""
+                                      ? SizedBox():Image.network( "${items[index]['imageUrl']}",
                                     // height: 150,
                                     // width: 150,
-                                  ): SizedBox(),
-                                ]),
+                                  ),
+                                ]
+                                  ),
                               );
                             }
                           );
@@ -174,7 +178,7 @@ class HomeScreen extends StatelessWidget {
                         ? null
                         : controller.postError.value,
                     textCapitalization: TextCapitalization.none,
-                    hintText: 'What\'s on your mind',
+                    hintText: 'Upload a picture and gist us',
                     //hintText: 'keleDevine001',
                     textInputAction: TextInputAction.next,
                     onChange: controller.clearPostError,
@@ -188,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                  InkWell(
                    onTap: ()async{
-                    await controller.uploadImage();
+                   await controller.uploadImage();
                      print("${controller.file}" +"jkhjk");
                    },
                      child: Icon(Icons.upload)),
@@ -199,11 +203,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                   CustomButton(
                     text: 'Proceed',
-                    // isLoading: controller.isLoading.value,
+                    isLoading: controller.isLoading.value,
                     onTap: controller.active.value == appInactiveColor
                         ? () {}
-                        : () {
-                      // controller.validateZainPay(context);
+                        : () async {
+                      await controller.saveFile(controller.file);
+                       Get.to(()=> HomeScreen());
                     },
                     color: controller.active.value,
                     textColor: Colors.white,
@@ -211,6 +216,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ]),
               ),
+
             ),
           );
         });
