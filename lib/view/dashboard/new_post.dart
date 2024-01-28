@@ -7,7 +7,6 @@ import '../../components/auth_input_form.dart';
 import '../../components/custom_button.dart';
 import '../../components/scrow_behaviour.dart';
 import '../../dashboard_controller/dashboard_contoller.dart';
-import 'home.dart';
 
 class NewPost extends StatelessWidget {
   final controller = Get.put(DashboardController());

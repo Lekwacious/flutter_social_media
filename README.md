@@ -11,11 +11,15 @@ To run the project, you need to install [Dart](https://dart.dev/) and the [Flutt
 A few resources to get you started if this is your first Flutter project:
 
 
-- To run the project, clone the repository, get the dependences by running `flutter pub get`, then `flutter run`
+- To run the project, clone the repository, get the dependencies by running `flutter pub get`, then `flutter run`
 - The project uses the model view Controller architectural design pattern. The controllers are subclases of Getx Controller, which is the state manager useed.
 - The project uses Getx Navigator for routing. To move to the next screen, you simply do `Get.to(()=>NewScreen())` . The controller contains the business logic, hence ensured saperation of concerns
 - The view contains the code the UI
 - The component folder contains reusable classes and components.
-- The project used observable stream capabilities of Getx throuh OBX
+- The project used observable stream capabilities of Getx through OBX
+- The authentication was implemented with Firebase authentication
+- File upload was implemented with image picker
+- File upload was implemented with firebase storage
+- While cloud Firestore, a NOSQL database from firebase was used to persist data
 
 
