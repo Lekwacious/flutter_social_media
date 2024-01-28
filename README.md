@@ -12,5 +12,10 @@ A few resources to get you started if this is your first Flutter project:
 
 
 - To run the project, clone the repository, get the dependences by running `flutter pub get`, then `flutter run`
+- The project uses the model view Controller architectural design pattern. The controllers are subclases of Getx Controller, which is the state manager useed.
+- The project uses Getx Navigator for routing. To move to the next screen, you simply do `Get.to(()=>NewScreen())` . The controller contains the business logic, hence ensured saperation of concerns
+- The view contains the code the UI
+- The component folder contains reusable classes and components.
+- The project used observable stream capabilities of Getx throuh OBX
 
 

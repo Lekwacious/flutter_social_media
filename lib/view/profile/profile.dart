@@ -5,13 +5,28 @@ class Profile extends StatelessWidget {
 var controller = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
-    return  Container(
-      color: Colors.white,
-      child: IconButton(onPressed: () {
-        controller.signOut();
+    return  Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SafeArea(
+        child: Container(
 
-      }, icon: Icon(Icons.logout_outlined),),
+          color: Colors.white,
+          child: Center(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Log out"),
+                IconButton(onPressed: () {
+                  controller.signOut();
 
+                }, icon: Icon(Icons.logout_outlined),),
+              ],
+            ),
+          ),
+
+        ),
+      ),
     );
   }
 }

@@ -1,5 +1,6 @@
 
 import 'package:socialmedia/utils/indexes.dart';
+import 'package:socialmedia/view/dashboard/bottomtab.dart';
 
 import '../../components/app_colors.dart';
 import '../../components/auth_input_form.dart';
@@ -57,7 +58,6 @@ class NewPost extends StatelessWidget {
                         InkWell(
                             onTap: ()async{
                               await controller.uploadImage();
-                              print("${controller.file}" +"jkhjk");
                             },
                             child: Icon(Icons.upload)),
 
@@ -73,7 +73,7 @@ class NewPost extends StatelessWidget {
                               ? () {}
                               : () async {
                             await controller.saveFile(controller.file);
-                            Get.to(()=> HomeScreen());
+                            Get.off(()=> BottomTab());
                             controller.clearPostError;
                             controller.file?.readAsBytesSync() ==null;
                           },

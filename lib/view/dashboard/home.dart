@@ -65,9 +65,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 25,
-                  ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -110,29 +108,79 @@ class HomeScreen extends StatelessWidget {
                               itemCount: items.length,
                               itemBuilder: (context, index) {
                                 Map thisItem = items[index];
+                                var isLike = false.obs;
+                                var count =0.obs;
                                 return Padding(
                                   padding: EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
+                                  child: Card(
+                                    elevation: 5,
+                                    //semanticContainer: true,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
 
-                                    Text(
-                                      "${thisItem['posts']}",
-                                      textAlign: TextAlign.justify,
-                                      style: GoogleFonts.lato(
-                                        textStyle: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    thisItem['imageUrl'] == ""
-                                        ? SizedBox()
-                                        : Image.network(
-                                            "${items[index]['imageUrl']}",
+                                    children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "${thisItem['posts']}",
+                                            textAlign: TextAlign.justify,
+                                            style: GoogleFonts.lato(
+                                              textStyle: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                  ]),
+                                        ),
+                                        Stack(
+                                            children: [
+
+
+                                          thisItem['imageUrl'] == ""
+                                              ? SizedBox()
+                                              : Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Image.network(
+                                                    "${items[index]['imageUrl']}",
+                                                  ),
+                                              ),
+                                               Obx(()=>Positioned(
+                                                  right: 0,
+                                                  bottom: 0,
+                                                  child: InkWell(
+                                                    onTap: (){
+                                                      if(isLike.value ==false){
+                                                        isLike.value = true;
+                                                        count.value++;
+                                                      }
+                                                      else{
+                                                        isLike.value = false;
+                                                        count.value--;
+                                                      }
+
+                                                    },
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(Icons.favorite,
+                                                            color:  isLike.value == true?Colors.red:Colors.black ,
+
+                                                          ),
+                                                          Text("${count.value}",
+                                                            style: TextStyle(
+                                                              color: isLike.value == true?Colors.red:Colors.black ,
+                                                            ),
+
+                                                          )
+                                                        ],
+                                                      )),
+                                              ),
+                                               ),
+                                        ]
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 );
                               });
                         }
